@@ -31,4 +31,3 @@ The following guides illustrate how to use some features concretely:
 * Spring Data JPA
 * JWTT for Auth Token
 * Jasypt for encrypt password
-# springboot-maven-REST

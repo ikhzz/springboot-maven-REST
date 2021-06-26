@@ -1,5 +1,7 @@
 package com.ikhz.models.entities;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -10,13 +12,17 @@ import java.io.Serializable;
 @Entity
 @Table
 @PropertySource("application.properties")
+@Getter
 public class User implements Serializable{
 
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Setter
     @Column(nullable = false)
     private String userName;
+    @Setter
     @Column(nullable = false, unique = true)
     private String userEmail;
     @Column(nullable = false)
@@ -24,7 +30,7 @@ public class User implements Serializable{
 
     @Value("${simplcrud.seed}")
     private String seed;
-
+    @Setter
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -34,9 +40,5 @@ public class User implements Serializable{
         encryptor.setPassword(seed);
         userPassword = encryptor.encrypt(userPassword);
         this.userPassword = userPassword;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
     }
 }
