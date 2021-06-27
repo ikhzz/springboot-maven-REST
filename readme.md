@@ -25,9 +25,11 @@ The following guides illustrate how to use some features concretely:
 ### Feature : 
 
 * Software project management with maven
-* Java 11
-* Lombok
-* Mysql
-* Spring Data JPA
-* JWTT for Auth Token
-* Jasypt for encrypt password
+* Java 11.x.x
+* Spring-Boot 2.5.x
+* Lombok 1.18.x
+* Mysql (mysql-connector 8.0.x)
+* Spring Data JPA 
+* spring-boot-validation for validation
+* JWTT 0.9.x for Auth Token
+* Jasypt 1.9.x for encrypt password
