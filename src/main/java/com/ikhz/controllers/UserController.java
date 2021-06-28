@@ -1,9 +1,9 @@
 package com.ikhz.controllers;
 
 import com.ikhz.dto.ErrorResponse;
+import com.ikhz.dto.SignInValidator;
 import com.ikhz.models.entities.User;
 import com.ikhz.services.UserService;
-import com.ikhz.utility.EncryptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +19,11 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private EncryptionHelper encryptionHelper;
-
+    // get all user method for test
     @GetMapping
-    public Iterable<User> findAll() { return userService.findAll(); }
-
-
-    @PostMapping
+    public ResponseEntity<Object> findAll() { return userService.findAll(); }
+    // signup controller
+    @PostMapping("/signup")
     public ResponseEntity signUp(@Valid @RequestBody User user, Errors errors){
         // check user email
         User registered = userService.findByEmail(user.getUserEmail());
@@ -42,8 +38,22 @@ public class UserController {
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
-        // set encryped password
-        user.setUserPassword(encryptionHelper.passwordEncryption(user.getUserPassword()));
+
         return userService.create(user);
+    }
+    // signin controller
+    @PostMapping("/signin")
+    public ResponseEntity signIn(@Valid @RequestBody SignInValidator user, Errors errors){
+        // check validation error
+        if(errors.hasErrors()){
+            ErrorResponse errorResponse = new ErrorResponse("Sign In Failed");
+
+            for(ObjectError error: errors.getAllErrors()){
+                errorResponse.getMessage().add(error.getDefaultMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
+        return userService.signIn(user);
     }
 }

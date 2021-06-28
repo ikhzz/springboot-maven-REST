@@ -1,14 +1,19 @@
 package com.ikhz.dto;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Getter;
+
+import java.nio.charset.StandardCharsets;
 
 @Getter
 public class TokenResponse {
 
-    private final String message = "Sign Up Success";
+    private String message = " Success";
     private String token;
 
-    public TokenResponse(Long id){
-
+    public TokenResponse(String type, Long id, String secret){
+        this.message = type + message;
+        this.token = Jwts.builder().setSubject(String.valueOf(id)).signWith(SignatureAlgorithm.HS384, secret).compact();
     }
 }
