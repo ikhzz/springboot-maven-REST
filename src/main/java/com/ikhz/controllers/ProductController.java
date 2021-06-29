@@ -12,7 +12,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -22,15 +21,19 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
-
+    // get all available product method
     @GetMapping
+    public ResponseEntity getAllAvailable(){
+        return productService.findAllAvailable();
+    }
+    // get all product method
+    @GetMapping("/all")
     public ResponseEntity<Object> getAllProduct(){
         return productService.findAll();
     }
-
+    // create product method
     @PostMapping
     public ResponseEntity create(@Valid @RequestBody Product product, Errors errors, @RequestHeader HttpHeaders httpHeaders){
-
 
         String token = httpHeaders.getFirst(HttpHeaders.AUTHORIZATION);
         if(token == null){
@@ -48,5 +51,10 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
         return productService.create(product, split[1]);
+    }
+    // buy product method
+    @PostMapping("/buy")
+    public ResponseEntity buyProduct(){
+        return ResponseEntity.ok("ok");
     }
 }

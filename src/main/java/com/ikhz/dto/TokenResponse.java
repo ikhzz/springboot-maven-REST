@@ -14,6 +14,6 @@ public class TokenResponse {
 
     public TokenResponse(String type, Long id, String secret){
         this.message = type + message;
-        this.token = Jwts.builder().setSubject(String.valueOf(id)).signWith(SignatureAlgorithm.HS384, secret).compact();
+        this.token = Jwts.builder().setSubject(String.valueOf(id)).signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 }

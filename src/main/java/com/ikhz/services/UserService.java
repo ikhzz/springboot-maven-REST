@@ -30,6 +30,7 @@ public class UserService {
     public ResponseEntity<TokenResponse> create(User user){
         user.setUserPassword(encryptionHelper.passwordEncryption(user.getUserPassword()));
         User createdUser = userRepo.save(user);
+        // add validation if user is saved
         TokenResponse tokenResponse = new TokenResponse("Sign Up", createdUser.getId(), encryptionHelper.getTokenSecret());
         return ResponseEntity.ok(tokenResponse);
     }

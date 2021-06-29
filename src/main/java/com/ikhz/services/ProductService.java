@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -30,7 +28,6 @@ public class ProductService {
     @Autowired
     private EncryptionHelper encryptionHelper;
 
-    @GetMapping
     public ResponseEntity<Object> findAll(){
         List<Product> products = (List<Product>) productRepo.findAll();
 
@@ -41,10 +38,11 @@ public class ProductService {
         }
         return ResponseEntity.ok(products);
     }
-    @PostMapping
+    // method to create product
     public ResponseEntity create(Product product, String token){
         String id = encryptionHelper.tokenDecryption(token);
         Optional<User> user = userRepo.findById(Long.parseLong(id));
+        // add validation if user is not a suplier
         if(user.isEmpty()){
             ErrorResponse errorResponse = new ErrorResponse("No data Found");
             errorResponse.getMessage().add("Suplier is not found");
@@ -52,9 +50,19 @@ public class ProductService {
         }
 
         product.setSuplier(user.get());
-        productRepo.save(product);
-        return ResponseEntity.ok("ok");
+        Product result = productRepo.save(product);
+
+        return ResponseEntity.ok(result);
     }
-
-
+    // method to get all available product
+    public ResponseEntity findAllAvailable(){
+        List<Product> products = productRepo.findByProductStockGreaterThan(0);
+        if(products.isEmpty()){
+            ErrorResponse errorResponse = new ErrorResponse("No data Found");
+            errorResponse.getMessage().add("No product has available stock");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+        return ResponseEntity.ok(products);
+    }
+    // delete method isn't necessary even product stock == 0
 }
