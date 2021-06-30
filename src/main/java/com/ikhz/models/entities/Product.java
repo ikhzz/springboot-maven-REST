@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+// Class to save all product
 @Entity
 @Table
 public class Product implements Serializable{
@@ -34,6 +35,7 @@ public class Product implements Serializable{
     @Getter
     @Setter
     @Column(nullable = false)
+    @NotNull(message = "product price is required")
     private long productPrice;
 
     @Getter

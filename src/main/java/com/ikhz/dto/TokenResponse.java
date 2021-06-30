@@ -4,8 +4,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Getter;
 
-import java.nio.charset.StandardCharsets;
-
 @Getter
 public class TokenResponse {
 

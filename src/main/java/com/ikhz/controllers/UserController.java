@@ -22,13 +22,9 @@ public class UserController {
     // get all user method for test
     @GetMapping
     public ResponseEntity<Object> findAll() { return userService.findAll(); }
-    // signup controller
+    // method to signup user
     @PostMapping("/signup")
-    public ResponseEntity signUp(@Valid @RequestBody User user, Errors errors){
-        // check user email
-        User registered = userService.findByEmail(user.getUserEmail());
-        // set error if email is registered
-        if(registered != null) errors.reject("a", "Email is already registered");
+    public ResponseEntity<Object> signUp(@Valid @RequestBody User user, Errors errors){
         // check validation error
         if(errors.hasErrors()){
             ErrorResponse errorResponse = new ErrorResponse("Sign Up Failed");
@@ -41,9 +37,9 @@ public class UserController {
 
         return userService.create(user);
     }
-    // signin controller
+    // method to sign in user
     @PostMapping("/signin")
-    public ResponseEntity signIn(@Valid @RequestBody SignInValidator user, Errors errors){
+    public ResponseEntity<Object> signIn(@Valid @RequestBody SignInValidator user, Errors errors){
         // check validation error
         if(errors.hasErrors()){
             ErrorResponse errorResponse = new ErrorResponse("Sign In Failed");

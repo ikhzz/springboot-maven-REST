@@ -1,5 +1,6 @@
 package com.ikhz.controllers;
 
+import com.ikhz.dto.EditProductValidation;
 import com.ikhz.dto.ErrorResponse;
 import com.ikhz.models.entities.Product;
 import com.ikhz.services.ProductService;
@@ -23,7 +24,7 @@ public class ProductController {
     ProductService productService;
     // get all available product method
     @GetMapping
-    public ResponseEntity getAllAvailable(){
+    public ResponseEntity<Object> getAllAvailable(){
         return productService.findAllAvailable();
     }
     // get all product method
@@ -33,7 +34,7 @@ public class ProductController {
     }
     // create product method
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody Product product, Errors errors, @RequestHeader HttpHeaders httpHeaders){
+    public ResponseEntity<Object> create(@Valid @RequestBody Product product, Errors errors, @RequestHeader HttpHeaders httpHeaders){
 
         String token = httpHeaders.getFirst(HttpHeaders.AUTHORIZATION);
         if(token == null){
@@ -54,7 +55,43 @@ public class ProductController {
     }
     // buy product method
     @PostMapping("/buy")
-    public ResponseEntity buyProduct(){
-        return ResponseEntity.ok("ok");
+    public ResponseEntity<Object> buyProduct(@Valid @RequestBody EditProductValidation buy, Errors errors, @RequestHeader HttpHeaders httpHeaders){
+        ErrorResponse errorResponse = new ErrorResponse("Cannot buy product");
+        if(errors.hasErrors()){
+
+            for(ObjectError error: errors.getAllErrors()){
+                errorResponse.getMessage().add(error.getDefaultMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
+        String token = httpHeaders.getFirst(HttpHeaders.AUTHORIZATION);
+        if(token == null){
+            errorResponse.getMessage().add("Authorization token is required");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+        }
+        String[] split = token.split(" ", 2);
+
+        return productService.buyProduct(buy, split[1]);
+    }
+    //add product method
+    @PostMapping("/add")
+    public ResponseEntity<Object> addProduct(@Valid @RequestBody EditProductValidation addProduct, Errors errors, @RequestHeader HttpHeaders httpHeaders){
+        ErrorResponse errorResponse = new ErrorResponse("Cannot buy product");
+        if(errors.hasErrors()){
+            for(ObjectError error: errors.getAllErrors()){
+                errorResponse.getMessage().add(error.getDefaultMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
+        String token = httpHeaders.getFirst(HttpHeaders.AUTHORIZATION);
+        if(token == null){
+            errorResponse.getMessage().add("Authorization token is required");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+        }
+        String[] split = token.split(" ", 2);
+
+        return productService.addProduct(addProduct, split[1]);
     }
 }

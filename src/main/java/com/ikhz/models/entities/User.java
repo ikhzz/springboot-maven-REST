@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
+// User class implement 3 type of user of ADMIN, SUPLIER and GUEST
 @Entity
 @Table
 @Getter
@@ -37,5 +38,4 @@ public class User implements Serializable{
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private final Role role = Role.GUEST;
-
 }

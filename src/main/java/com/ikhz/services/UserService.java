@@ -26,16 +26,23 @@ public class UserService {
 
     @Autowired
     private EncryptionHelper encryptionHelper;
-
-    public ResponseEntity<TokenResponse> create(User user){
+    // method to create user
+    public ResponseEntity<Object> create(User user){
+        User registered = findByEmail(user.getUserEmail());
+        // set error if email is registered
+        if(registered != null){
+            ErrorResponse errorResponse = new ErrorResponse("Sign Up Failed");
+            errorResponse.getMessage().add("email is already exist");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
         user.setUserPassword(encryptionHelper.passwordEncryption(user.getUserPassword()));
         User createdUser = userRepo.save(user);
         // add validation if user is saved
         TokenResponse tokenResponse = new TokenResponse("Sign Up", createdUser.getId(), encryptionHelper.getTokenSecret());
         return ResponseEntity.ok(tokenResponse);
     }
-
-    public ResponseEntity signIn(SignInValidator signInValidator){
+    // method get user token by sign in
+    public ResponseEntity<Object> signIn(SignInValidator signInValidator){
         Optional<User> user = Optional.ofNullable(userRepo.findByUserEmail(signInValidator.getUserEmail()));
         ErrorResponse errorResponse = new ErrorResponse("Sign in Failed");
 
@@ -53,7 +60,7 @@ public class UserService {
         TokenResponse tokenResponse = new TokenResponse("Sign In", user.get().getId(), encryptionHelper.getTokenSecret());
         return ResponseEntity.ok(tokenResponse);
     }
-
+    // method to list all user
     public ResponseEntity<Object> findAll(){
         List<User> users = (List<User>) userRepo.findAll();
         List<Object> lists = new ArrayList<>();

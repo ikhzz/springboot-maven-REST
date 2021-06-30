@@ -33,3 +33,10 @@ The following guides illustrate how to use some features concretely:
 * spring-boot-validation for validation
 * JWTT 0.9.x for Auth Token
 * Jasypt 1.9.x for encrypt password
+
+### Summary :
+
+* Simple crud app
+* with 3 tables of User, product, And Transaction
+* authorization user with token and encrypted password in database
+* product can be created or edited only with authorized user 
