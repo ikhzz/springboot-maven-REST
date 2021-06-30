@@ -2,10 +2,7 @@ package com.ikhz.services;
 
 import com.ikhz.dto.EditProductValidation;
 import com.ikhz.dto.ErrorResponse;
-import com.ikhz.models.entities.Product;
-import com.ikhz.models.entities.Transaction;
-import com.ikhz.models.entities.TransactionType;
-import com.ikhz.models.entities.User;
+import com.ikhz.models.entities.*;
 import com.ikhz.models.repos.ProductRepo;
 import com.ikhz.models.repos.TransactionRepo;
 import com.ikhz.models.repos.UserRepo;
@@ -51,10 +48,14 @@ public class ProductService {
     public ResponseEntity<Object> create(Product product, String token){
         String id = encryptionHelper.tokenDecryption(token);
         Optional<User> user = userRepo.findById(Long.parseLong(id));
-        // add validation if user is not a suplier
         if(user.isEmpty()){
             ErrorResponse errorResponse = new ErrorResponse("No data Found");
             errorResponse.getMessage().add("Suplier is not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+        if(user.get().getRole() != Role.SUPLIER){
+            ErrorResponse errorResponse = new ErrorResponse("Unauthorized");
+            errorResponse.getMessage().add("You can't create product");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
         // something else than model mapper
@@ -78,7 +79,11 @@ public class ProductService {
         Optional<User> user = userRepo.findById(Long.parseLong(id));
         // add validation if user is not a suplier
         if(user.isEmpty()){
-            errorResponse.getMessage().add("Suplier id not found");
+            errorResponse.getMessage().add("Admin id not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+        if(user.get().getRole() != Role.ADMIN){
+            errorResponse.getMessage().add("You can't buy product");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
 
@@ -117,9 +122,12 @@ public class ProductService {
         ErrorResponse errorResponse = new ErrorResponse("Cannot add product");
         String id = encryptionHelper.tokenDecryption(token);
         Optional<User> user = userRepo.findById(Long.parseLong(id));
-        // add validation if user is not an admin
         if(user.isEmpty()){
             errorResponse.getMessage().add("Admin id not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+        if(user.get().getRole() != Role.SUPLIER){
+            errorResponse.getMessage().add("You can't add product");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
 

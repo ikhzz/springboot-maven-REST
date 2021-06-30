@@ -11,6 +11,7 @@ For further reference, please consider the following sections:
 * [Spring Web](https://docs.spring.io/spring-boot/docs/2.5.1/reference/htmlsingle/#boot-features-developing-web-applications)
 * [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.5.1/reference/htmlsingle/#using-boot-devtools)
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.5.1/reference/htmlsingle/#boot-features-jpa-and-spring-data)
+* [Initialize project](https://start.spring.io)
 
 #### Guides
 The following guides illustrate how to use some features concretely:
@@ -20,7 +21,8 @@ The following guides illustrate how to use some features concretely:
 * [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
 * [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Initialize project](https://start.spring.io)
+* [Youtube SpringBoot guide](https://www.youtube.com/watch?v=Z0JfmObjKRw&list=PLRjWo99hnirwyafPfaxfu0psMR0hUmdQc)
+* [Udemy SpringBoot guide](https://www.udemy.com/course/java-spring-framework-masterclass/)
 
 ### Feature : 
 
