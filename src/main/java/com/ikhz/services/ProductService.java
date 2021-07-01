@@ -34,8 +34,14 @@ public class ProductService {
     private EncryptionHelper encryptionHelper;
 
     // method to list all registered product
-    public ResponseEntity<Object> findAll(){
-        List<Product> products = (List<Product>) productRepo.findAll();
+    public ResponseEntity<Object> findAll(String search){
+        List<Product> products;
+        if(search == null){
+            products = (List<Product>) productRepo.findAll();
+        } else {
+            products = productRepo.findByProductNameContains(search);
+
+        }
 
         if(products.isEmpty()){
             ErrorResponse errorResponse = new ErrorResponse("No data Found");

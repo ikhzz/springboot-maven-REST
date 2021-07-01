@@ -9,4 +9,6 @@ import java.util.List;
 public interface ProductRepo extends CrudRepository<Product, Long> {
     // derived spring boot query method to get product greater than parameter
     List<Product> findByProductStockGreaterThan(long productStock) ;
+    // derived pring boot query method get all by name
+    List<Product> findByProductNameContains(String name);
 }

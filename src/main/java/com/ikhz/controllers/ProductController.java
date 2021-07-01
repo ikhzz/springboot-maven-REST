@@ -29,8 +29,8 @@ public class ProductController {
     }
     // get all product method
     @GetMapping("/all")
-    public ResponseEntity<Object> getAllProduct(){
-        return productService.findAll();
+    public ResponseEntity<Object> getAllProduct(@RequestParam(required = false) String search){
+        return productService.findAll(search);
     }
     // create product method
     @PostMapping
